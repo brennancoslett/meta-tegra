@@ -261,6 +261,8 @@ tegraflash_create_flash_config_tegra194() {
         -e"s,TBCFILE,${CBOOTFILENAME}," \
         -e"s,CAMERAFW,camera-rtcpu-rce.img," \
         -e"s,DRAMECCTYPE,dram_ecc," -e"s,DRAMECCFILE,dram-ecc-t194.bin," -e"s,DRAMECCNAME,dram-ecc-fw," \
+        -e"s,BADPAGETYPE,black_list_info," -e"s,BADPAGEFILE,badpage.bin," -e"s,BADPAGENAME,badpage-fw," \
+        -e"s,SCEFILE,sce_t194.bin," -e"s,SCENAME,sce-fw," -e"s,SCESIGN,true," \     
         -e"s,SPEFILE,spe_t194.bin," \
         -e"s,WB0BOOT,warmboot_t194_prod.bin," \
         -e"s,TOSFILE,${TOSIMGFILENAME}," \
@@ -328,6 +330,7 @@ BOOTFILES_tegra194 = "\
     preboot_d15_prod_cr.bin \
     slot_metadata.bin \
     spe_t194.bin \
+    sce_t194.bin \
     warmboot_t194_prod.bin \
     xusb_sil_rel_fw \
 "
@@ -536,6 +539,9 @@ create_tegraflash_pkg_tegra194() {
         cp -R ${STAGING_BINDIR_NATIVE}/tegra186-flash/* .
         mv ./rollback_parser.py ./rollback/
         tegraflash_generate_bupgen_script
+    fi 
+    if [ "${@d.getVar('TEGRA_INDUSTRIAL')}" == "1" ]; then
+        dd if=/dev/zero of=badpage.bin bs=4096 count=1
     fi
     if [ -e ${STAGING_DATADIR}/tegraflash/odmfuse_pkc_${MACHINE}.xml ]; then
         cp ${STAGING_DATADIR}/tegraflash/odmfuse_pkc_${MACHINE}.xml ./odmfuse_pkc.xml

@@ -10,9 +10,12 @@ FLASHTOOLS_PATH = "${STAGING_BINDIR_NATIVE}/${SOC_FAMILY}-flash"
 FLASHTOOLS_PATH_tegra194 = "${STAGING_BINDIR_NATIVE}/tegra186-flash"
 PATH =. "${FLASHTOOLS_PATH}:"
 
-BOOTDEVNAME = "${@'spi' if d.getVar('TEGRA_SPIFLASH_BOOT') == '1' else 'sdmmc_boot'}"
+TEMP_BOOTDEVNAME = "${@'spi' if d.getVar('TEGRA_SPIFLASH_BOOT') == '1' else 'sdmmc_boot'}"
+BOOTDEVNAME = "${@'spi' if d.getVar('TEGRA_INDUSTRIAL') == '1' else '${TEMP_BOOTDEVNAME}'}"
 BOOTDEVNAME_xavier-nx = "spi"
-USERDEVNAME = "${@'sdcard' if d.getVar('TEGRA_SPIFLASH_BOOT') == '1' else 'sdmmc_user'}"
+TEMP_USERDEVNAME = "${@'sdcard' if d.getVar('TEGRA_SPIFLASH_BOOT') == '1' else 'sdmmc_user'}"
+USERDEVNAME = "${@'sdmmc_user' if d.getVar('TEGRA_INDUSTRIAL') == '1' else '${TEMP_USERDEVNAME}'}"
+
 
 inherit image_types_tegra
 
