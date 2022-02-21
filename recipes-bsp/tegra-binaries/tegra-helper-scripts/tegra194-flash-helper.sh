@@ -203,6 +203,11 @@ case "$boardid" in
 		    BPFDTBREV="a04"
 		fi
 		;;
+		RC1)
+		TOREV="a02"
+		PMICREV="b01"
+		BPFDTBREV="a02"	
+		;;
 	    *)
 		echo "ERR: unrecognized board version $board_version" >&2
 		exit 1
@@ -320,7 +325,7 @@ bootloader_dtb $dtb_file"
 
 bctargs="$UPHY_CONFIG $MINRATCHET_CONFIG $TRIM_BPMP_DTB \
          --device_config $DEVICE_CONFIG \
-         --misc_config tegra194-mb1-bct-misc-flash.cfg \
+         --misc_config $MISC_CONFIG \
          --misc_cold_boot_config $MISC_COLD_BOOT_CONFIG \
          --pinmux_config $PINMUX_CONFIG \
          --gpioint_config $GPIOINT_CONFIG \
